@@ -18,7 +18,7 @@ Core function to partition mges contigs:
     - resolve_matrix
     - run_checkv
     - run_metabat
-    - shuffle_mge_bins
+    - shuffle_mge_binsnetwork
     - update_mge_data
 """
 
@@ -37,7 +37,7 @@ from os.path import join
 import shutil
 from typing import List, Tuple
 
-
+#used by generate_mge_bins_pairs
 def build_matrix(
     contigs: List[str], contigs_size: List[int], pairs_files: List[str]
 ) -> "np.ndarray":
@@ -123,7 +123,7 @@ def build_matrix(
     logger.info(f"{npairs} pairs extracted.")
     return mat
 
-
+#used by mge_binning
 def build_mge_depth(
     contigs_file: str,
     depth_file: str,
@@ -169,7 +169,7 @@ def build_mge_depth(
     # Write mges depth file to use metabat2.
     mge_depth.to_csv(mge_depth_file, sep="\t", index=False)
 
-
+#used by mge_binning
 def generate_bin_summary(
     contigs_data: "pd.DataFrame", mge_bins: dict, outfile: str
 ) -> "pd.DataFrame":
@@ -240,7 +240,7 @@ def generate_bin_summary(
     )
     return summary
 
-
+#used by mge_binning
 def generate_mge_bins_metabat(
     mges_data: pd.DataFrame,
 ) -> pd.DataFrame:
@@ -292,7 +292,7 @@ def generate_mge_bins_metabat(
             mge_bins[bin_id]["Score"] = np.nan
     return mges_data, mge_bins
 
-
+#used by mge_binning
 def generate_mge_bins_pairs(
     mges_data: pd.DataFrame,
     pairs_files: List[str],
@@ -337,7 +337,7 @@ def generate_mge_bins_pairs(
 
     return mges_data, mge_bins
 
-
+#used by mge_binning
 def generate_mges_fasta(
     fasta: str, mge_bins: dict, out_file: str, tmp_dir: str
 ):
@@ -642,7 +642,7 @@ def resolve_matrix(mat: "np.ndarray", threshold: float = .8) -> List[Tuple]:
         maxi = np.max(mat)
     return bins
 
-
+#used by mge_binning
 def run_checkv(
     checkv_db: str, fasta: str, out_dir: str, remove_tmp: bool, threads: int
 ):
@@ -681,7 +681,7 @@ def run_checkv(
     if remove_tmp:
         shutil.rmtree(join(out_dir, "tmp"))
 
-
+#used by mge_binning
 def run_metabat(
     contigs_file: str,
     input_fasta: str,
@@ -735,7 +735,7 @@ def run_metabat(
     )
     return metabat
 
-
+#used by mge_binning
 def shuffle_mge_bins(
     mges_data: pd.DataFrame,
 ) -> Tuple[pd.DataFrame, dict]:
@@ -775,7 +775,7 @@ def shuffle_mge_bins(
             mges_bins[mge_bin_id]["Score"] = np.nan
     return mges_data, mges_bins
 
-
+#used by generate_mge_bins_pairs
 def update_mge_data(
     mges_data: pd.DataFrame, bins: List[Tuple]
 ) -> pd.DataFrame:
