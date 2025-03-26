@@ -154,7 +154,7 @@ class Subnetwork:
 
 def associate_bin(
     bin_contigs: dict,
-    network: "networkx.classes.graph.Graph",
+    network: networkx.classes.graph.Graph,
     contig_data: pd.DataFrame,
     threshold: float,
 ) -> dict:
